@@ -7,14 +7,14 @@ USE employees_db;
 
 /* Creates department table */
 CREATE TABLE department (
-  id INT NOT AUTO_INCREMENT NULL PRIMARY KEY,
-  department_name VARCHAR(30) NOT NULL
+  id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(30) NOT NULL
 );
 
 /* Had to call this position because role is a trigger word in sql apparently? */
 /* Creates position table */
-CREATE TABLE position (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE role (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(30) NOT NULL,
     salary DECIMAL NOT NULL,
     department_id INT,
@@ -23,17 +23,14 @@ CREATE TABLE position (
     ON DELETE SET NULL
 );
 
-/* Creates eployee table */
-CREATE TABLE employee (
-    id INT AUTO_INCREMENT PRIMARY KEY NOT NULL ,
+/* Creates employees table */
+CREATE TABLE employees (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT ,
     first_name VARCHAR(30) NOT NULL,
-    last_name DECIMAL NOT NULL,
+    last_name VARCHAR(30) NOT NULL,
     role_id INT,
     manager_id INT,
     FOREIGN KEY (role_id)
-    REFERENCES position(id)
-    ON DELETE SET NULL,
-    FOREIGN KEY (manager_id)
-    REFERENCES employee(id)
+    REFERENCES role(id)
     ON DELETE SET NULL
 );
