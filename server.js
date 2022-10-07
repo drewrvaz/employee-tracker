@@ -1,5 +1,6 @@
-// Import connection
-const sequelize = require('./config/connection');
+// Import express
+const express = require('express');
+const app = express();
 
 // Import inquirer
 const inquirer = require('inquirer');
@@ -10,7 +11,26 @@ const consoleTable = require('console.table');
 // Import mysql2
 const mysql = require('mysql2');
 
-promptUser();
+const PORT = process.env.PORT || 3001;
+
+
+// Connec to the db
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'H0m3!sWh3r3Th3H3@rt!s',
+  database: 'employee_db'
+});
+
+connection.connect(err => {
+  if (err) throw err;
+  console.log("connected!");
+  afterConnection();
+})
+
+afterConnection = () => {
+  promptUser()
+};
 
 // Inquirer prompt for the user's first choice
 const promptUser = () => {
@@ -25,7 +45,9 @@ const promptUser = () => {
                 'Add a department', 
                 'Add a role', 
                 'Add an employee', 
-                'Update an employee role']
+                'Update an employee role',
+                'No further actions'
+                ]
     }
   ])
   .then((answers) => { // If statements to run function based on user choice
@@ -51,12 +73,22 @@ const promptUser = () => {
     if (choices === "Update an employee role") {
       updateEmployee()
     }
+    if (choices === "No further actions") {
+      connection.end()
+    }
   })
 };
 
 // Function to show departments
 showDepartments = () => {
+  console.log("Showing departments");
+  const sql = `SELECT * FROM department`;
 
+  connection.promise().query(sql, (err, rows) =>{
+    if (err) throw err;
+    console.table(rows);
+    connection.end()
+  })
 };
 
 // Function to show roles
@@ -89,6 +121,6 @@ updateEmployee = () => {
 
 };
 
-sequelize.sync().then(() => {
-  app.listen(PORT, () => console.log('Now listening'));
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
