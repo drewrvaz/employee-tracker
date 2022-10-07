@@ -29,7 +29,7 @@ connection.connect(err => {
 })
 
 afterConnection = () => {
-  promptUser()
+  promptUser();
 };
 
 // Inquirer prompt for the user's first choice
@@ -53,28 +53,28 @@ const promptUser = () => {
   .then((answers) => { // If statements to run function based on user choice
     const { choices } = answers;
     if (choices === "View all departments") {
-      showDepartments()
+      showDepartments();
     }
     if (choices === "View all roles") {
-      showRoles()
+      showRoles();
     }
     if (choices === "View all employees") {
-      showEmployees()
+      showEmployees();
     }
     if (choices === "Add a department") {
-      addDepartment()
+      addDepartment();
     }
     if (choices === "Add a role") {
-      addRole()
+      addRole();
     }
     if (choices === "Add an employee") {
-      addEmployee()
+      addEmployee();
     }
     if (choices === "Update an employee role") {
-      updateEmployee()
+      updateEmployee();
     }
     if (choices === "No further actions") {
-      connection.end()
+      connection.end();
     }
   })
 };
@@ -87,36 +87,43 @@ showDepartments = () => {
   connection.promise().query(sql, (err, rows) =>{
     if (err) throw err;
     console.table(rows);
-    connection.end()
+    promptUser();
   })
 };
 
 // Function to show roles
 showRoles = () => {
-  console.log("Showing departments");
-  const sql = `SELECT role.*, department.name
-                              AS department
-                              FROM role
-                              LEFT JOIN department
-                              ON role.department_id = department.id
-                              WHERE role.id = ?`;
+  console.log("Showing roles");
+  const sql = `SELECT role.id, role.title, department.name AS department
+               FROM role
+               INNER JOIN department ON role.department_id = department.id`;
 
   connection.promise().query(sql, (err, rows) =>{
     if (err) throw err;
     console.table(rows);
-    connection.end()
+  promptUser();
   })
 };
 
 // Function to show employees
 showEmployees = () => {
   console.log("Showing employees");
-  const sql = `SELECT * FROM employee`;
+  const sql = `SELECT employee.id,
+                      employee.first_name,
+                      employee.last_name,
+                      role.title,
+                      department.name AS department,
+                      role.salary,
+                      CONCAT (manager.first_name, " ", manager.last_name) AS manager
+               FROM employee
+                      LEFT JOIN role ON employee.role_id = role.id
+                      LEFT JOIN department ON role.depsrtment_id = department.id
+                      LEFT JOIN employee manager ON employee.manager_id = manager.id`;
 
   connection.promise().query(sql, (err, rows) =>{
     if (err) throw err;
     console.table(rows);
-    connection.end()
+    promptUser()
   })
 };
 

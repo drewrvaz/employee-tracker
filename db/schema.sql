@@ -1,9 +1,9 @@
 /* Removes any previous databases called employee_db */
-DROP DATABASE IF EXISTS employees_db;
+DROP DATABASE IF EXISTS employee_db;
 /* Creates employees_db */
-CREATE DATABASE employees_db;
+CREATE DATABASE employee_db;
 
-USE employees_db;
+USE employee_db;
 
 /* Creates department table */
 CREATE TABLE department (
