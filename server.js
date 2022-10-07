@@ -93,27 +93,119 @@ showDepartments = () => {
 
 // Function to show roles
 showRoles = () => {
+  console.log("Showing departments");
+  const sql = `SELECT role.*, department.name
+                              AS department
+                              FROM role
+                              LEFT JOIN department
+                              ON role.department_id = department.id
+                              WHERE role.id = ?`;
 
+  connection.promise().query(sql, (err, rows) =>{
+    if (err) throw err;
+    console.table(rows);
+    connection.end()
+  })
 };
 
 // Function to show employees
 showEmployees = () => {
+  console.log("Showing employees");
+  const sql = `SELECT * FROM employee`;
 
+  connection.promise().query(sql, (err, rows) =>{
+    if (err) throw err;
+    console.table(rows);
+    connection.end()
+  })
 };
 
 // Function to add a department
 addDepartment = () => {
+  inquirer.prompt([
+    {
+      type: 'input',
+      name: 'addDept',
+      message: "What is the new department you would like to add?"
+    },
+  ])
+  .then(answer => {
+    const sql = `INSERT INTO department (name)
+                 VALUES (?)`;
+    connection.query(sql, answer.addDept, (err, result) => {
+      if (err) throw err;
+      console.log('Added' + answer.addDept + " to your company's departments!")
 
+      showDepartments();
+    })
+  })
 };
 
 // Function to add a role
 addRole = () => {
+  inquirer.prompt([
+    {
+      type: 'input',
+      name: 'addRole',
+      message: "What is the new role you would like to add?"
+    },
+    {
+      type: 'input',
+      name: 'addSalary',
+      message: "What is the salary for this new role?"
+    },
+    {
+      type: 'input',
+      name: 'chooseDept',
+      message: 'What department would you like this role to be added to?'
+    }
+  ])
+  .then(answer => {
+    const sql = `INSERT INTO role (title, salary, department_id)
+                 VALUES (?)`;
+    connection.query(sql, answer.addDept, (err, result) => {
+      if (err) throw err;
+      console.log('Added' + answer.addDept + " to your company's departments!")
 
+      showRoles();
+    })
+  })
 };
 
 // Function to add an employee
 addEmployee = () => {
+  inquirer.prompt([
+    {
+      type: 'input',
+      name: 'addFirstName',
+      message: "What is the new employee's first name?"
+    },
+    {
+      type: 'input',
+      name: 'addLastName',
+      message: "What is the new employee's last name?"
+    },
+    {
+      type: 'input',
+      name: 'chooseRole',
+      message: 'What role does this employee have?'
+    },
+    {
+      type: 'input',
+      name: 'chooseManager',
+      message: "Who is the employees manager?"
+    }
+  ])
+  .then(answer => {
+    const sql = `INSERT INTO employees (first_name, last_name, role_id, manager_id)
+                 VALUES (?)`;
+    connection.query(sql, answer.addDept, (err, result) => {
+      if (err) throw err;
+      console.log('Added' + answer.addDept + " to your company's departments!")
 
+      showEmployees();
+    })
+  })
 };
 
 // Function to update an employee
