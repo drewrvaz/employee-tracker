@@ -217,7 +217,28 @@ addEmployee = () => {
 
 // Function to update an employee
 updateEmployee = () => {
-
+  inquirer.prompt([
+    {
+      type: 'input',
+      name: 'name',
+      message: "Which employee would you like to update?"
+    },
+    {
+      type: 'input',
+      name: 'updateRole',
+      message: "What is the new role?"
+    },
+    {
+      type: 'input',
+      name: 'chooseRole',
+      message: 'What role does this employee have?'
+    },
+    {
+      type: 'input',
+      name: 'chooseManager',
+      message: "Who is the employees manager?"
+    }
+  ])
 };
 
 app.listen(PORT, () => {
