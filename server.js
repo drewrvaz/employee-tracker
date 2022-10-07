@@ -122,6 +122,7 @@ showEmployees = () => {
 
 // Function to add a department
 addDepartment = () => {
+  // Inquirer prompt to add a department to the database
   inquirer.prompt([
     {
       type: 'input',
@@ -129,12 +130,12 @@ addDepartment = () => {
       message: "What is the new department you would like to add?"
     },
   ])
-  .then(answer => {
+  .then(answer => { // Then function to add the department input to the database
     const sql = `INSERT INTO department (name)
                  VALUES (?)`;
     connection.query(sql, answer.addDept, (err, result) => {
       if (err) throw err;
-      console.log('Added' + answer.addDept + " to your company's departments!")
+      console.log("Added " + answer.addDept + " to your company's departments!")
 
       showDepartments();
     })
@@ -143,6 +144,7 @@ addDepartment = () => {
 
 // Function to add a role
 addRole = () => {
+  // Inquirer prompts for adding a role to the database
   inquirer.prompt([
     {
       type: 'input',
@@ -160,12 +162,14 @@ addRole = () => {
       message: 'What department would you like this role to be added to?'
     }
   ])
-  .then(answer => {
+  .then(answer => { // Then function to add the role input to the database
     const sql = `INSERT INTO role (title, salary, department_id)
-                 VALUES (?)`;
-    connection.query(sql, answer.addDept, (err, result) => {
+                 VALUES (?, ?, ?)`;
+    // Const to house user input for adding a role
+    const responses = [answer.addRole, answer.addSalary, answer.chooseDept]
+    connection.query(sql, responses, (err, result) => {
       if (err) throw err;
-      console.log('Added' + answer.addDept + " to your company's departments!")
+      console.log("Added " + answer.role + " to your company's roles!")
 
       showRoles();
     })
@@ -174,6 +178,7 @@ addRole = () => {
 
 // Function to add an employee
 addEmployee = () => {
+  // Inquirer prompts for adding an employee to the database
   inquirer.prompt([
     {
       type: 'input',
@@ -196,12 +201,14 @@ addEmployee = () => {
       message: "Who is the employees manager?"
     }
   ])
-  .then(answer => {
+  .then(answer => { // Then function to add the employee input to the database
     const sql = `INSERT INTO employees (first_name, last_name, role_id, manager_id)
-                 VALUES (?)`;
-    connection.query(sql, answer.addDept, (err, result) => {
+                 VALUES (?, ?, ?, ?)`;
+    // Const to house the user input for adding an employee
+    const responses = [answer.addFirstName, answer.addLastName, answer.chooseRole, answer.chooseManager]
+    connection.query(sql, responses, (err, result) => {
       if (err) throw err;
-      console.log('Added' + answer.addDept + " to your company's departments!")
+      console.log("Added " + answer.addFirstName + " " + answer.addLastName + " to your company's departments!")
 
       showEmployees();
     })
