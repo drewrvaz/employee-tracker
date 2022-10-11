@@ -215,7 +215,7 @@ addEmployee = () => {
     const responses = [answer.addFirstName, answer.addLastName, answer.chooseRole, answer.chooseManager]
     connection.query(sql, responses, (err, result) => {
       if (err) throw err;
-      console.log("Added " + answer.addFirstName + " " + answer.addLastName + " to your company's departments!")
+      console.log("Added " + answer.addFirstName + " " + answer.addLastName + " to your company's employees!")
 
       showEmployees();
     })
@@ -227,8 +227,13 @@ updateEmployee = () => {
   inquirer.prompt([
     {
       type: 'input',
-      name: 'name',
-      message: "Which employee would you like to update?"
+      name: 'updatefirstName',
+      message: "What is the first name of the employee would you like to update?"
+    },
+    {
+      type: 'input',
+      name: 'updatelastName',
+      message: "What is the last name of the employee would you like to update?"
     },
     {
       type: 'input',
@@ -237,15 +242,21 @@ updateEmployee = () => {
     },
     {
       type: 'input',
-      name: 'chooseRole',
-      message: 'What role does this employee have?'
-    },
-    {
-      type: 'input',
-      name: 'chooseManager',
+      name: 'updateManager',
       message: "Who is the employees manager?"
     }
   ])
+  .then(answer => { // Then function to update employee in database
+    const sql = `INSERT INTO employees (first_name, last_name, role_id, manager_id)
+                 VALUES (?, ?, ?, ?)`;
+    const responses = [answer.updateFirstName, answer.updateLastName, answer.updateRole, answer.updateManager]
+    connection.query(sql, responses, (err, result) => {
+      if (err) throw err;
+      console.log("Updated " + answer.addFirstName + " " + answer.addLastName + "'s information!")
+
+      showEmployees();
+    })
+  })
 };
 
 app.listen(PORT, () => {
