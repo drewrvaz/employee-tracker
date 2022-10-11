@@ -84,7 +84,7 @@ showDepartments = () => {
   console.log("Showing departments");
   const sql = `SELECT * FROM department`;
 
-  connection.promise().query(sql, (err, rows) =>{
+  connection.query(sql, (err, rows) =>{
     if (err) throw err;
     console.table(rows);
     promptUser();
@@ -98,7 +98,7 @@ showRoles = () => {
                FROM role
                INNER JOIN department ON role.department_id = department.id`;
 
-  connection.promise().query(sql, (err, rows) =>{
+  connection.query(sql, (err, rows) => {
     if (err) throw err;
     console.table(rows);
   promptUser();
@@ -108,19 +108,19 @@ showRoles = () => {
 // Function to show employees
 showEmployees = () => {
   console.log("Showing employees");
-  const sql = `SELECT employee.id,
-                      employee.first_name,
-                      employee.last_name,
+  const sql = `SELECT employees.id,
+                      employees.first_name,
+                      employees.last_name,
                       role.title,
                       department.name AS department,
                       role.salary,
                       CONCAT (manager.first_name, " ", manager.last_name) AS manager
-               FROM employee
-                      LEFT JOIN role ON employee.role_id = role.id
-                      LEFT JOIN department ON role.depsrtment_id = department.id
-                      LEFT JOIN employee manager ON employee.manager_id = manager.id`;
+               FROM employees
+                      LEFT JOIN role ON employees.role_id = role.id
+                      LEFT JOIN department ON role.department_id = department.id
+                      LEFT JOIN employee manager ON employees.manager_id = manager.id`;
 
-  connection.promise().query(sql, (err, rows) =>{
+  connection.query(sql, (err, rows) =>{
     if (err) throw err;
     console.table(rows);
     promptUser()
