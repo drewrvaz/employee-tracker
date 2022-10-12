@@ -10,6 +10,8 @@
 * [Questions](#questions)
 ## Description
 The goal of this project was to build a command-line application from scratch to manage a company's employee database, using Node.js, Inquirer, and MySQL. This project allowed me to work with langauges that I am familiar with and unfamiliar with to create an application that would allow a company to update employee data from the command line side of things in a simple and effective way.
+
+Video demonstration: https://drive.google.com/file/d/17tF2MgO93OLNbWG3S3Xbb5iUjzszgJjI/view?usp=sharing
 ## Installation
 Pull the git repository onto your computer. And then run npm i to install of the necessary packages for running the program.
 ## Usage
