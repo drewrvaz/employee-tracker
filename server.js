@@ -94,7 +94,7 @@ showDepartments = () => {
 // Function to show roles
 showRoles = () => {
   console.log("Showing roles");
-  const sql = `SELECT role.id, role.title, department.name AS department
+  const sql = `SELECT role.id, role.title, role.salary, department.name AS department
                FROM role
                INNER JOIN department ON role.department_id = department.id`;
 
@@ -108,17 +108,18 @@ showRoles = () => {
 // Function to show employees
 showEmployees = () => {
   console.log("Showing employees");
-  const sql = `SELECT employees.id,
-                      employees.first_name,
-                      employees.last_name,
-                      role.title,
-                      department.name AS department,
-                      role.salary,
-                      CONCAT (manager.first_name, " ", manager.last_name) AS manager
-               FROM employees
-                      LEFT JOIN role ON employees.role_id = role.id
-                      LEFT JOIN department ON role.department_id = department.id
-                      LEFT JOIN employee manager ON employees.manager_id = manager.id`;
+  const sql = `SELECT * FROM employees`
+  // `SELECT employees.id,
+  //                     employees.first_name,
+  //                     employees.last_name,
+  //                     role.title,
+  //                     department.name AS department,
+  //                     role.salary,
+  //                     CONCAT (manager.first_name, " ", manager.last_name) AS manager
+  //              FROM employees
+  //                     LEFT JOIN role ON employees.role_id = role.id
+  //                     LEFT JOIN department ON role.department_id = department.id
+  //                     LEFT JOIN employee manager ON employees.manager_id = manager.id`;
 
   connection.query(sql, (err, rows) =>{
     if (err) throw err;
@@ -227,12 +228,12 @@ updateEmployee = () => {
   inquirer.prompt([
     {
       type: 'input',
-      name: 'updatefirstName',
+      name: 'updateFirstName',
       message: "What is the first name of the employee would you like to update?"
     },
     {
       type: 'input',
-      name: 'updatelastName',
+      name: 'updateLastName',
       message: "What is the last name of the employee would you like to update?"
     },
     {
