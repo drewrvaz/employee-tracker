@@ -108,18 +108,18 @@ showRoles = () => {
 // Function to show employees
 showEmployees = () => {
   console.log("Showing employees");
-  const sql = `SELECT * FROM employees`
-  // `SELECT employees.id,
-  //                     employees.first_name,
-  //                     employees.last_name,
-  //                     role.title,
-  //                     department.name AS department,
-  //                     role.salary,
-  //                     CONCAT (manager.first_name, " ", manager.last_name) AS manager
-  //              FROM employees
-  //                     LEFT JOIN role ON employees.role_id = role.id
-  //                     LEFT JOIN department ON role.department_id = department.id
-  //                     LEFT JOIN employee manager ON employees.manager_id = manager.id`;
+  const sql = `SELECT employees.id, 
+                      employees.first_name, 
+                      employees.last_name,
+                      employees.manager_id,
+                      role.title,
+                      department.name AS department,
+                      role.salary
+               FROM employees
+               LEFT JOIN role
+               ON employees.role_id = role.id
+               LEFT JOIN department
+               ON role.department_id = department.id`;
 
   connection.query(sql, (err, rows) =>{
     if (err) throw err;
